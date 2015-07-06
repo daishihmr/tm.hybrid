@@ -33,6 +33,7 @@
                 }
             }
             this.threeRenderer = new THREE.WebGLRenderer(param);
+            this.threeRenderer.setClearColor("0x000000");
 
             // if (this.element.parentNode) {
             //     this.element.parentNode.insertBefore(this.threeRenderer.domElement, this.element);
