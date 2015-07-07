@@ -224,6 +224,6 @@
     delegater.method("rotateOnAxis", true);
 
     tm.hybrid.ThreeElement.prototype.localToGlobal = tm.hybrid.ThreeElement.prototype.localToWorld;
-    tm.hybrid.ThreeElement.prototype.globalToLocal = tm.hybrid.ThreeElement.prototype.globalToLocal;
+    tm.hybrid.ThreeElement.prototype.globalToLocal = tm.hybrid.ThreeElement.prototype.worldToLocal;
 
 })();
