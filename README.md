@@ -41,10 +41,24 @@ tm.define("KiraraOnStage", {
         // メッシュを表示する
         var kirara = tm.hybrid.Mesh("kirara") // Spriteっぽく使える
             .addChildTo(this)
-            .on("enterframe", function() {
-                if (this.rolling) this.rotationY += 10; // Y軸回転
+            .on("enterframe", function(e) {
+                
+                // スワイプでくるくるまわす
+                var p = e.app.pointing;
+                if (p.getPointing()) {
+                    this.vy = p.deltaPosition.x * 0.03;
+                    this.rotation.y += this.vy;
+                } else {
+                    if (this.vy) {
+                        this.rotation.y += this.vy;
+                        this.vy *= 0.95;
+                        if (Math.abs(this.vy) < 0.1) {
+                            this.vy = 0;
+                        }
+                    }
+                }
             });
-        kirara.rolling = false;
+        console.log(kirara.threeObject);
 
         // tweenerも使える
         kirara.tweener.clear()
@@ -53,29 +67,25 @@ tm.define("KiraraOnStage", {
             .setLoop(true);
 
         // 2Dスプライトとの併用も可能
-        var hiyoko = tm.display.Sprite("hiyoko", 32, 32)
-            .setScale(4)
-            .setFrameIndex(0)
-            .addChildTo(this)
-            .on("enterframe", function() {
-                this.x += this.vx * 10;
-                this.y += this.vy * 10;
-                if (this.x < 0 || 640 < this.x) this.vx *= -1;
-                if (this.y < 0 || 960 < this.y) this.vy *= -1;
-                
-                this.frameIndex = (this.frameIndex + 1) % 4;
-                this.rotation += 2;
-            });
-        hiyoko.vx = 1;
-        hiyoko.vy = 1;
-
-        tm.ui.FlatButton({ text: "かいてん" })
-            .setPosition(320, 100)
-            .addChildTo(this)
-            .on("push", function() {
-                kirara.rolling = !kirara.rolling;
-                this.label.text = kirara.rolling ? "とまる" : "かいてん";
-            });
+        for (var i = 0; i < 10; i++) {
+            var hiyoko = tm.display.Sprite("hiyoko", 32, 32)
+                .setScale(4)
+                .setPosition(Math.rand(0, 640), Math.rand(0, 940))
+                .setRotation(Math.rand(0, 360))
+                .setFrameIndex(0)
+                .addChildTo(this)
+                .on("enterframe", function() {
+                    this.x += this.vx * 10;
+                    this.y += this.vy * 10;
+                    if (this.x < 0 || 640 < this.x) this.vx *= -1;
+                    if (this.y < 0 || 960 < this.y) this.vy *= -1;
+                    
+                    this.frameIndex = (this.frameIndex + 1) % 4;
+                    this.rotation += 2;
+                });
+            hiyoko.vx = 1;
+            hiyoko.vy = 1;
+        }
     }
 });
 ```

@@ -32,7 +32,11 @@
         },
 
         render: function(renderer) {
-            renderer.render(this.three.scene, this.three.camera.threeObject);
+            if (this.effectComposer) {
+                this.effectComposer.render();
+            } else {
+                renderer.render(this.three.scene, this.three.camera.threeObject);
+            }
         },
 
         /** @override */
