@@ -48,7 +48,7 @@ tm.define("KiraraOnStage", {
                     if (this.vy) {
                         this.rotation.y += this.vy;
                         this.vy *= 0.95;
-                        if (Math.abs(this.vy) < 0.1) {
+                        if (Math.abs(this.vy) < 0.001) {
                             this.vy = 0;
                         }
                     }
