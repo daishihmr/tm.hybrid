@@ -23,7 +23,7 @@
                 this.superInit(mesh);
             } else if (mesh instanceof THREE.Geometry) {
                 if (arguments.length >= 2) {
-                    this.superInit(new THREE.Mesh(meth, arguments[1]));
+                    this.superInit(new THREE.Mesh(mesh, arguments[1]));
                 } else {
                     this.superInit(new THREE.Mesh(mesh));
                 }
