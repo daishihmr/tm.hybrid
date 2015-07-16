@@ -62,7 +62,6 @@ tm.hybrid = tm.hybrid || {};
             this.threeCanvas = this.threeRenderer.domElement;
         },
 
-        /** @override */
         fitWindow: function(everFlag) {
             var _fitFunc = function() {
                 everFlag = everFlag === undefined ? true : everFlag;
@@ -99,7 +98,6 @@ tm.hybrid = tm.hybrid || {};
             return tm.display.CanvasApp.prototype.fitWindow.call(this, everFlag);
         },
 
-        /** @override */
         _update: function() {
             tm.app.CanvasApp.prototype._update.call(this);
             var scene = this.currentScene;
@@ -109,7 +107,6 @@ tm.hybrid = tm.hybrid || {};
             }
         },
 
-        /** @override */
         _draw: function() {
             tm.display.CanvasApp.prototype._draw.call(this);
             var scene = this.currentScene;
@@ -118,7 +115,6 @@ tm.hybrid = tm.hybrid || {};
             }
         },
 
-        /** @override */
         resize: function(w, h) {
             this.threeRenderer.setSize(w, h);
             var scene = this.currentScene;

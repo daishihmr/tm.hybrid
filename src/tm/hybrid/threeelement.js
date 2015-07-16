@@ -32,11 +32,9 @@
         init: function(threeObject) {
             this.superInit();
 
-            /** @type {THREE.Object3D} */
             this.threeObject = threeObject || new THREE.Object3D();
         },
 
-        /** @override */
         addChild: function(child) {
             if (child.parent) child.remove();
             child.parent = this;
@@ -52,7 +50,6 @@
             return child;
         },
 
-        /** @override */
         removeChild: function(child) {
             var index = this.children.indexOf(child);
             if (index != -1) {
@@ -198,16 +195,10 @@
             return this;
         },
 
-        /**
-         * @override
-         */
         show: function() {
             this.visible = true;
             return this;
         },
-        /**
-         * @override
-         */
         hide: function() {
             this.visible = false;
             return this;

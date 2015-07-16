@@ -120,11 +120,9 @@ THE SOFTWARE.
         init: function(threeObject) {
             this.superInit();
 
-            /** @type {THREE.Object3D} */
             this.threeObject = threeObject || new THREE.Object3D();
         },
 
-        /** @override */
         addChild: function(child) {
             if (child.parent) child.remove();
             child.parent = this;
@@ -140,7 +138,6 @@ THE SOFTWARE.
             return child;
         },
 
-        /** @override */
         removeChild: function(child) {
             var index = this.children.indexOf(child);
             if (index != -1) {
@@ -286,16 +283,10 @@ THE SOFTWARE.
             return this;
         },
 
-        /**
-         * @override
-         */
         show: function() {
             this.visible = true;
             return this;
         },
-        /**
-         * @override
-         */
         hide: function() {
             this.visible = false;
             return this;
@@ -845,7 +836,6 @@ THE SOFTWARE.
             }
         },
 
-        /** @override */
         addChild: function(child) {
             if (child instanceof tm.hybrid.ThreeElement) {
                 this.three.addChild(child);
@@ -854,7 +844,6 @@ THE SOFTWARE.
             }
         },
 
-        /** @override */
         removeChild: function(child) {
             if (child instanceof tm.hybrid.ThreeElement) {
                 this.three.removeChild(child);
@@ -1025,7 +1014,6 @@ tm.hybrid = tm.hybrid || {};
             this.threeCanvas = this.threeRenderer.domElement;
         },
 
-        /** @override */
         fitWindow: function(everFlag) {
             var _fitFunc = function() {
                 everFlag = everFlag === undefined ? true : everFlag;
@@ -1062,7 +1050,6 @@ tm.hybrid = tm.hybrid || {};
             return tm.display.CanvasApp.prototype.fitWindow.call(this, everFlag);
         },
 
-        /** @override */
         _update: function() {
             tm.app.CanvasApp.prototype._update.call(this);
             var scene = this.currentScene;
@@ -1072,7 +1059,6 @@ tm.hybrid = tm.hybrid || {};
             }
         },
 
-        /** @override */
         _draw: function() {
             tm.display.CanvasApp.prototype._draw.call(this);
             var scene = this.currentScene;
@@ -1081,7 +1067,6 @@ tm.hybrid = tm.hybrid || {};
             }
         },
 
-        /** @override */
         resize: function(w, h) {
             this.threeRenderer.setSize(w, h);
             var scene = this.currentScene;

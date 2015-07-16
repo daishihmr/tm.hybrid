@@ -54,7 +54,6 @@
             }
         },
 
-        /** @override */
         addChild: function(child) {
             if (child instanceof tm.hybrid.ThreeElement) {
                 this.three.addChild(child);
@@ -63,7 +62,6 @@
             }
         },
 
-        /** @override */
         removeChild: function(child) {
             if (child instanceof tm.hybrid.ThreeElement) {
                 this.three.removeChild(child);
