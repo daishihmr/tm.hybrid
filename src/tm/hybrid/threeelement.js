@@ -55,6 +55,19 @@
             return this;
         },
 
+        ahead: function(delta) {
+            this.threeObject.position.add(this.forwardVector.multiplyScalar(delta));
+            return this;
+        },
+        sideStep: function(delta) {
+            this.threeObject.position.add(this.sidewardVector.multiplyScalar(delta));
+            return this;
+        },
+        elevate: function(delta) {
+            this.threeObject.position.add(this.upwardVector.multiplyScalar(delta));
+            return this;
+        },
+
         setRotation: function(x, y, z) {
             this.rotationX = x;
             this.rotationY = y;
@@ -196,6 +209,26 @@
             this.threeObject.rotation.z = v * Math.DEG_TO_RAD;
         }
     });
+
+    tm.hybrid.ThreeElement.prototype.getter("forwardVector", function() {
+        if (this._forwardVector == null) this._forwardVector = new THREE.Vector3();
+        this._forwardVector.set(0, 0, 1);
+        this._forwardVector.applyQuaternion(this.quaternion);
+        return this._forwardVector;
+    });
+    tm.hybrid.ThreeElement.prototype.getter("sidewardVector", function() {
+        if (this._sidewardVector == null) this._sidewardVector = new THREE.Vector3();
+        this._sidewardVector.set(1, 0, 0);
+        this._sidewardVector.applyQuaternion(this.quaternion);
+        return this._sidewardVector;
+    });
+    tm.hybrid.ThreeElement.prototype.getter("upwardVector", function() {
+        if (this._upVector == null) this._upVector = new THREE.Vector3();
+        this._upVector.set(0, 1, 0);
+        this._upVector.applyQuaternion(this.quaternion);
+        return this._upVector;
+    });
+    
     delegater.property("up");
     delegater.property("quaternion");
     delegater.property("visible");
