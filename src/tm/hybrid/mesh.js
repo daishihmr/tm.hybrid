@@ -41,7 +41,22 @@
 
     var delegater = tm.hybrid.DelegateUtil(tm.hybrid.Mesh);
 
+    /**
+     * @method
+     * @memberOf tm.hybrid.Mesh.prototype
+     * @param {THREE.Geometry} geometry
+     * @returns this
+     */
+    function setGeometry() {}
     delegater.property("geometry");
+
+    /**
+     * @method
+     * @memberOf tm.hybrid.Mesh.prototype
+     * @param {THREE.Material} material
+     * @returns this
+     */
+    function setMaterial() {}
     delegater.property("material");
 
     delegater.method("getMorphTargetIndexByName", true);
