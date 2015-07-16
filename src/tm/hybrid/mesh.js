@@ -11,6 +11,12 @@
     tm.define("tm.hybrid.Mesh", {
         superClass: "tm.hybrid.ThreeElement",
 
+        /**
+         * @constructor tm.hybrid.Mesh
+         * @param {THREE.Mesh} mesh
+         * @extends {tm.hybrid.ThreeElement}
+         * @mixes THREE.Mesh
+         */
         init: function(mesh) {
             if (typeof(mesh) === "string") {
                 var threeJSON = tm.asset.Manager.get(mesh);
@@ -35,7 +41,22 @@
 
     var delegater = tm.hybrid.DelegateUtil(tm.hybrid.Mesh);
 
+    /**
+     * @method
+     * @memberOf tm.hybrid.Mesh.prototype
+     * @param {THREE.Geometry} geometry
+     * @returns this
+     */
+    function setGeometry() {}
     delegater.property("geometry");
+
+    /**
+     * @method
+     * @memberOf tm.hybrid.Mesh.prototype
+     * @param {THREE.Material} material
+     * @returns this
+     */
+    function setMaterial() {}
     delegater.property("material");
 
     delegater.method("getMorphTargetIndexByName", true);

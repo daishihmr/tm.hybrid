@@ -1,3 +1,7 @@
+var tm = tm || {};
+/** @namespace */
+tm.asset = tm.asset || {};
+
 (function() {
     // var tm = require("../../../libs/tmlib");
     // var THREE = require("../../../libs/three");
@@ -7,6 +11,10 @@
     tm.define("tm.asset.ThreeJSON", {
         superClass: "tm.event.EventDispatcher",
 
+        /**
+         * @constructor tm.asset.ThreeJSON
+         * @extends {tm.event.EventDispatcher}
+         */
         init: function(path) {
             this.superInit();
             this.mesh = null;
