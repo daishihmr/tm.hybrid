@@ -21,7 +21,7 @@
         /**
          * @constructor tm.hybrid.Scene
          * @extends {tm.app.Scene}
-         * @mixes {THREE.Scene}
+         * @mixes THREE.Scene
          *
          * @property {THREE.PerspectiveCamera} camera
          * @property {THREE.DirectionalLight} directionalLight

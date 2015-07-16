@@ -812,7 +812,7 @@ THE SOFTWARE.
         /**
          * @constructor tm.hybrid.Scene
          * @extends {tm.app.Scene}
-         * @mixes {THREE.Scene}
+         * @mixes THREE.Scene
          *
          * @property {THREE.PerspectiveCamera} camera
          * @property {THREE.DirectionalLight} directionalLight
@@ -961,6 +961,11 @@ THE SOFTWARE.
     });
 })();
 
+/** @namespace */
+var tm = tm || {};
+/** @namespace */
+tm.hybrid = tm.hybrid || {};
+
 /*
  * hybridapp.js
  */
@@ -969,7 +974,7 @@ THE SOFTWARE.
     // var tm = require("../../../libs/tmlib");
     // var THREE = require("../../../libs/three");
     // require("./scene");
-
+    
     tm.define("tm.hybrid.Application", {
         superClass: "tm.display.CanvasApp",
 
@@ -1205,6 +1210,10 @@ THE SOFTWARE.
     };
 })();
 
+var tm = tm || {};
+/** @namespace */
+tm.asset = tm.asset || {};
+
 (function() {
     // var tm = require("../../../libs/tmlib");
     // var THREE = require("../../../libs/three");
@@ -1214,6 +1223,10 @@ THE SOFTWARE.
     tm.define("tm.asset.ThreeJSON", {
         superClass: "tm.event.EventDispatcher",
 
+        /**
+         * @constructor tm.asset.ThreeJSON
+         * @extends {tm.event.EventDispatcher}
+         */
         init: function(path) {
             this.superInit();
             this.mesh = null;

@@ -1,3 +1,8 @@
+/** @namespace */
+var tm = tm || {};
+/** @namespace */
+tm.hybrid = tm.hybrid || {};
+
 /*
  * hybridapp.js
  */
@@ -6,7 +11,7 @@
     // var tm = require("../../../libs/tmlib");
     // var THREE = require("../../../libs/three");
     // require("./scene");
-
+    
     tm.define("tm.hybrid.Application", {
         superClass: "tm.display.CanvasApp",
 
