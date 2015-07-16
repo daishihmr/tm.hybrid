@@ -10,6 +10,25 @@
     tm.define("tm.hybrid.ThreeElement", {
         superClass: "tm.app.Element",
 
+        /**
+         * @constructor tm.hybrid.ThreeElement
+         * @param {THREE.Object3D} threeObject
+         * @extends {tm.app.Element}
+         * @mixes THREE.Object3D
+         *
+         * @property {number} x
+         * @property {number} y
+         * @property {number} z
+         * @property {number} scaleX
+         * @property {number} scaleY
+         * @property {number} scaleZ
+         * @property {number} rotationX
+         * @property {number} rotationY
+         * @property {number} rotationZ
+         * @property {THREE.Vector3} forwardVector readonly
+         * @property {THREE.Vector3} sidewardVector readonly
+         * @property {THREE.Vector3} upwardVector readonly
+         */
         init: function(threeObject) {
             this.superInit();
 
@@ -48,6 +67,13 @@
             }
         },
 
+        /**
+         * @method
+         * @memberOf tm.hybrid.ThreeElement.prototype
+         * @param {number} x
+         * @param {number} y
+         * @param {number} z
+         */
         setPosition: function(x, y, z) {
             this.x = x;
             this.y = y;
@@ -55,51 +81,112 @@
             return this;
         },
 
+        /**
+         * @method
+         * @memberOf tm.hybrid.ThreeElement.prototype
+         * @param {number} delta
+         */
         ahead: function(delta) {
             this.threeObject.position.add(this.forwardVector.multiplyScalar(delta));
             return this;
         },
+        /**
+         * @method
+         * @memberOf tm.hybrid.ThreeElement.prototype
+         * @param {number} delta
+         */
         sideStep: function(delta) {
             this.threeObject.position.add(this.sidewardVector.multiplyScalar(delta));
             return this;
         },
+        /**
+         * @method
+         * @memberOf tm.hybrid.ThreeElement.prototype
+         * @param {number} delta
+         */
         elevate: function(delta) {
             this.threeObject.position.add(this.upwardVector.multiplyScalar(delta));
             return this;
         },
 
+        /**
+         * @method
+         * @memberOf tm.hybrid.ThreeElement.prototype
+         * @param {number} x
+         * @param {number} y
+         * @param {number} z
+         */
         setRotation: function(x, y, z) {
             this.rotationX = x;
             this.rotationY = y;
             this.rotationZ = z;
             return this;
         },
+        /**
+         * @method
+         * @memberOf tm.hybrid.ThreeElement.prototype
+         * @param {number} x
+         */
         setRotationX: function(x) {
             this.rotationX = x;
             return this;
         },
+        /**
+         * @method
+         * @memberOf tm.hybrid.ThreeElement.prototype
+         * @param {number} y
+         */
         setRotationY: function(y) {
             this.rotationY = y;
             return this;
         },
+        /**
+         * @method
+         * @memberOf tm.hybrid.ThreeElement.prototype
+         * @param {number} z
+         */
         setRotationZ: function(z) {
             this.rotationZ = z;
             return this;
         },
 
+        /**
+         * @method
+         * @memberOf tm.hybrid.ThreeElement.prototype
+         * @param {number} degree
+         */
         rotatePitch: function(degree) {
             var q = tempQuat.setFromAxisAngle(V3_RIGHT, degree * Math.DEG_TO_RAD);
             this.quaternion.multiply(q);
+            return this;
         },
+        /**
+         * @method
+         * @memberOf tm.hybrid.ThreeElement.prototype
+         * @param {number} degree
+         */
         rotateYaw: function(degree) {
             var q = tempQuat.setFromAxisAngle(V3_UP, degree * Math.DEG_TO_RAD);
             this.quaternion.multiply(q);
+            return this;
         },
+        /**
+         * @method
+         * @memberOf tm.hybrid.ThreeElement.prototype
+         * @param {number} degree
+         */
         rotateRoll: function(degree) {
             var q = tempQuat.setFromAxisAngle(V3_FORWARD, degree * Math.DEG_TO_RAD);
             this.quaternion.multiply(q);
+            return this;
         },
 
+        /**
+         * @memberOf tm.hybrid.ThreeElement.prototype
+         * @param {number} x
+         * @param {number=} y
+         * @param {number=} z
+         */
         setScale: function(x, y, z) {
             if (arguments.length === 1) {
                 y = x;
@@ -111,10 +198,16 @@
             return this;
         },
 
+        /**
+         * @override
+         */
         show: function() {
             this.visible = true;
             return this;
         },
+        /**
+         * @override
+         */
         hide: function() {
             this.visible = false;
             return this;
@@ -176,7 +269,6 @@
             this.threeObject.scale.z = v;
         }
     });
-    delegater.property("eulerOrder");
     tm.hybrid.ThreeElement.prototype.accessor("rotation", {
         get: function() {
             return this.threeObject.rotation;

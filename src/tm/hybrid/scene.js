@@ -18,6 +18,21 @@
 
         effectComposer: null,
 
+        /**
+         * @constructor tm.hybrid.Scene
+         * @extends {tm.app.Scene}
+         * @mixes {THREE.Scene}
+         *
+         * @property {THREE.PerspectiveCamera} camera
+         * @property {THREE.DirectionalLight} directionalLight
+         * @property {THREE.AmbientLight} ambientLight
+         * @property {THREE.EffectComposer} effectComposer
+         * @property {THREE.Color} fogColor
+         * @property {number} fogNear
+         * @property {number} fogFar
+         * @property {Object} two
+         * @property {Object} three
+         */
         init: function() {
             this.superInit();
             this.two = this;

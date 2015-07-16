@@ -13,6 +13,15 @@
         threeRenderer: null,
         threeCanvas: null,
 
+        /**
+         * @constructor tm.hybrid.Application
+         * @param {HTMLCanvasElement|String} canvas2d canvas element or id for draw 2d graphics
+         * @param {HTMLCanvasElement|String} canvas3d canvas element or id for draw 3d graphics
+         * @extends {tm.display.CanvasApp}
+         *
+         * @property {THREE.WebGLRenderer} threeRenderer
+         * @property {HTMLCanvasElement} threeCanvas
+         */
         init: function(canvas2d, canvas3d) {
             this.superInit(canvas2d);
             this.setupThree(canvas3d);
@@ -21,6 +30,10 @@
             this.replaceScene(tm.hybrid.Scene())
         },
 
+        /**
+         * @memberOf tm.hybrid.Application.prototype
+         * @private
+         */
         setupThree: function(canvas3d) {
             var param = {
                 antialias: true,

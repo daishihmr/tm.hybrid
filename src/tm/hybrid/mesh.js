@@ -11,6 +11,12 @@
     tm.define("tm.hybrid.Mesh", {
         superClass: "tm.hybrid.ThreeElement",
 
+        /**
+         * @constructor tm.hybrid.Mesh
+         * @param {THREE.Mesh} mesh
+         * @extends {tm.hybrid.ThreeElement}
+         * @mixes THREE.Mesh
+         */
         init: function(mesh) {
             if (typeof(mesh) === "string") {
                 var threeJSON = tm.asset.Manager.get(mesh);
