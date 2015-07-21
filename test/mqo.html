@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+    
+<canvas id="canvas3d"></canvas>
+<canvas id="canvas2d"></canvas>
+
+<script src="https://cdn.rawgit.com/phi-jp/tmlib.js/0.5.2/build/tmlib.js"></script>
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r71/build/three.js"></script>
+
+<script src="../build/tm.hybrid.js"></script>
+<script>
+tm.main(function() {
+    var app = tm.hybrid.Application("#canvas2d", "#canvas3d");
+    app.resize(640, 960).fitWindow().run();
+    
+    app.replaceScene(tm.game.LoadingScene({
+        width: 640, height: 960,
+        assets: {
+            gradriel: "assets/gradriel_pose.mqo",
+        },
+        nextScene: mainScene,
+    }));
+});
+
+tm.define("mainScene", {
+    superClass: "tm.hybrid.Scene", // tm.app.Sceneの3D向け拡張
+    init: function() {
+        this.superInit();
+
+        // カメラ調整
+        this.camera.setPosition(0, 20, 50);
+        this.camera.lookAt(new THREE.Vector3(0, 10, 0));
+        
+        // ライトを動かす
+        this.directionalLight
+            .on("enterframe", function(e) {
+                var f = e.app.frame;
+                this.x = Math.cos(f * 0.1) * 10;
+                this.z = Math.sin(f * 0.1) * 10;
+            });
+
+        // メッシュを表示する
+        var mesh = tm.hybrid.Mesh("gradriel") // Spriteっぽく使える
+            .addChildTo(this)
+            .on("enterframe", function(e) {
+                // スワイプでくるくるまわす
+                var p = e.app.pointing;
+                if (p.getPointing()) {
+                    this.vy = p.deltaPosition.x * 0.03;
+                    this.rotation.y += this.vy;
+                } else {
+                    if (this.vy) {
+                        this.rotation.y += this.vy;
+                        this.vy *= 0.95;
+                        if (Math.abs(this.vy) < 0.1) {
+                            this.vy = 0;
+                        }
+                    }
+                }
+            });
+        mesh.rolling = false;
+
+        // tweenerも使える
+        mesh.tweener.clear()
+            .to({ scaleY: 0.9 }, 300, "easeInBack")
+            .to({ scaleY: 1.0 }, 300, "easeOutBack")
+            .setLoop(true);
+    }
+});
+</script>
+
+</body>
+</html>
