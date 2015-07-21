@@ -28,7 +28,7 @@ tm.asset = tm.asset || {};
             }
 
             tm.asset.Vox.parser.parse(path).then(function(voxelData) {
-                var builder = new vox.Builder(voxelData);
+                var builder = new vox.MeshBuilder(voxelData);
                 this.mesh = builder.createMesh();
                 this.flare("load");
             }.bind(this));
@@ -36,7 +36,7 @@ tm.asset = tm.asset || {};
     });
     tm.asset.Vox.parser = null;
 
-    tm.asset.Loader.register("three", function(path) {
+    tm.asset.Loader.register("vox", function(path) {
         return tm.asset.Vox(path);
     });
 

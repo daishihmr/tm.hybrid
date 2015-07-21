@@ -1,3 +1,19 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+    
+<canvas id="canvas3d"></canvas>
+<canvas id="canvas2d"></canvas>
+
+<script src="https://cdn.rawgit.com/phi-jp/tmlib.js/0.5.2/build/tmlib.min.js"></script>
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r71/build/three.min.js"></script>
+<script src="https://cdn.rawgit.com/daishihmr/vox.js/1.0.0/build/vox.min.js"></script>
+
+<script src="../build/tm.hybrid.js"></script>
+<script>
 tm.main(function() {
     var app = tm.hybrid.Application("#canvas2d", "#canvas3d");
     app.resize(640, 960).fitWindow().run();
@@ -5,19 +21,14 @@ tm.main(function() {
     app.replaceScene(tm.game.LoadingScene({
         width: 640, height: 960,
         assets: {
-            // 拡張子による判別がきかないため、typeパラメータをつける
-            kirara: {
-                type: "three",
-                url: "./assets/kirara.json",
-            },
-
+            haruharu: "./assets/haruharu.vox",
             hiyoko: "./assets/hiyoco_nomal_full.png",
         },
-        nextScene: KiraraOnStage,
+        nextScene: HaruharuOnStage,
     }));
 });
 
-tm.define("KiraraOnStage", {
+tm.define("HaruharuOnStage", {
     superClass: "tm.hybrid.Scene", // tm.app.Sceneの3D向け拡張
     init: function() {
         this.superInit();
@@ -35,7 +46,7 @@ tm.define("KiraraOnStage", {
             });
 
         // メッシュを表示する
-        var kirara = tm.hybrid.Mesh("kirara") // Spriteっぽく使える
+        var haruharu = tm.hybrid.Mesh("haruharu") // Spriteっぽく使える
             .addChildTo(this)
             .on("enterframe", function(e) {
                 
@@ -54,10 +65,9 @@ tm.define("KiraraOnStage", {
                     }
                 }
             });
-        console.log(kirara.threeObject);
 
         // tweenerも使える
-        kirara.tweener.clear()
+        haruharu.tweener.clear()
             .to({ scaleY: 0.9 }, 300, "easeInBack")
             .to({ scaleY: 1.0 }, 300, "easeOutBack")
             .setLoop(true);
@@ -84,3 +94,7 @@ tm.define("KiraraOnStage", {
         }
     }
 });
+</script>
+
+</body>
+</html>
