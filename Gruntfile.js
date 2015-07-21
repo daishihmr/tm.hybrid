@@ -25,36 +25,56 @@ THE SOFTWARE.\n\
 
 module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    
+    var SRC = [
+        "hybrid/delegateutil",
+        "hybrid/threeelement",
+        "hybrid/mesh",
+        "hybrid/camera",
+        "hybrid/orthocamera",
+        "hybrid/shape",
+        "hybrid/sprite",
+        "hybrid/texture",
+        "hybrid/scene",
+        "hybrid/application",
+        "hybrid/colorconv",
+        "hybrid/ambientlight",
+        "hybrid/directionallight",
+        "hybrid/utils",
+        // "hybrid/spritearray",
+        "asset/threejson",
+        "asset/vox",
+        "asset/mqo",
+    ].map(function(_){ return "./src/tm/" + _ + ".js" });
     
     grunt.initConfig({
         concat: {
             main: {
-                src: [
-                    "hybrid/delegateutil",
-                    "hybrid/threeelement",
-                    "hybrid/mesh",
-                    "hybrid/camera",
-                    "hybrid/orthocamera",
-                    "hybrid/shape",
-                    "hybrid/sprite",
-                    "hybrid/texture",
-                    "hybrid/scene",
-                    "hybrid/application",
-                    "hybrid/colorconv",
-                    "hybrid/ambientlight",
-                    "hybrid/directionallight",
-                    "hybrid/utils",
-                    "asset/threejson",
-                    "asset/vox",
-                    "asset/mqo",
-                ].map(function(_){ return "./src/tm/" + _ + ".js" }),
+                src: SRC,
                 dest: "./build/tm.hybrid.js",
                 options: {
                     banner: BANNER
                 }
             }
+        },
+        uglify: {
+            main: {
+                src: "build/tm.hybrid.js",
+                dest: "build/tm.hybrid.min.js",
+                options: {
+                    banner: BANNER
+                }
+            }
+        },
+        watch: {
+            main: {
+                files: SRC,
+                tasks: ["concat"],
+            }
         }
     });
 
-    grunt.registerTask("default", ["concat"]);
+    grunt.registerTask("default", ["concat", "uglify"]);
 };
