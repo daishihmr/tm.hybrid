@@ -1,3 +1,8 @@
+/** @namespace */
+var tm = tm || {};
+/** @namespace */
+tm.hybrid = tm.hybrid || {};
+
 /*
  * hybridapp.js
  */
@@ -6,13 +11,22 @@
     // var tm = require("../../../libs/tmlib");
     // var THREE = require("../../../libs/three");
     // require("./scene");
-
+    
     tm.define("tm.hybrid.Application", {
         superClass: "tm.display.CanvasApp",
 
         threeRenderer: null,
         threeCanvas: null,
 
+        /**
+         * @constructor tm.hybrid.Application
+         * @param {HTMLCanvasElement|String} canvas2d canvas element or id for draw 2d graphics
+         * @param {HTMLCanvasElement|String} canvas3d canvas element or id for draw 3d graphics
+         * @extends {tm.display.CanvasApp}
+         *
+         * @property {THREE.WebGLRenderer} threeRenderer
+         * @property {HTMLCanvasElement} threeCanvas
+         */
         init: function(canvas2d, canvas3d) {
             this.superInit(canvas2d);
             this.setupThree(canvas3d);
@@ -21,6 +35,10 @@
             this.replaceScene(tm.hybrid.Scene())
         },
 
+        /**
+         * @memberOf tm.hybrid.Application.prototype
+         * @private
+         */
         setupThree: function(canvas3d) {
             var param = {
                 antialias: true,
@@ -44,7 +62,6 @@
             this.threeCanvas = this.threeRenderer.domElement;
         },
 
-        /** @override */
         fitWindow: function(everFlag) {
             var _fitFunc = function() {
                 everFlag = everFlag === undefined ? true : everFlag;
@@ -81,7 +98,6 @@
             return tm.display.CanvasApp.prototype.fitWindow.call(this, everFlag);
         },
 
-        /** @override */
         _update: function() {
             tm.app.CanvasApp.prototype._update.call(this);
             var scene = this.currentScene;
@@ -91,7 +107,6 @@
             }
         },
 
-        /** @override */
         _draw: function() {
             tm.display.CanvasApp.prototype._draw.call(this);
             var scene = this.currentScene;
@@ -100,7 +115,6 @@
             }
         },
 
-        /** @override */
         resize: function(w, h) {
             this.threeRenderer.setSize(w, h);
             var scene = this.currentScene;
