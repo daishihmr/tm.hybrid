@@ -19,9 +19,16 @@
          */
         init: function(mesh) {
             if (typeof(mesh) === "string") {
-                var threeJSON = tm.asset.Manager.get(mesh);
-                if (threeJSON) {
-                    this.superInit(threeJSON.mesh.clone());
+                var asset = tm.asset.Manager.get(mesh);
+                if (asset) {
+                    if (asset instanceof tm.asset.ThreeJSON) {
+                        this.superInit(asset.mesh.clone());
+                    } else if (asset instanceof tm.asset.MQO) {
+                        this.superInit(asset.model.meshes[0]);
+                        for (var i = 1; i < asset.model.meshes.length; i++) {
+                            tm.hybrid.Mesh(asset.model.meshes[i]).addChildTo(this);
+                        }
+                    }
                 } else {
                     console.error("アセット'{0}'がないよ".format(mesh));
                 }
@@ -29,7 +36,7 @@
                 this.superInit(mesh);
             } else if (mesh instanceof THREE.Geometry) {
                 if (arguments.length >= 2) {
-                    this.superInit(new THREE.Mesh(meth, arguments[1]));
+                    this.superInit(new THREE.Mesh(mesh, arguments[1]));
                 } else {
                     this.superInit(new THREE.Mesh(mesh));
                 }
