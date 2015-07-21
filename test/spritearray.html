@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+
+<canvas id="c3"></canvas>
+<canvas id="c2"></canvas>
+
+<script src="https://cdn.rawgit.com/phi-jp/tmlib.js/0.5.2/build/tmlib.min.js"></script>
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r71/build/three.min.js"></script>
+<script src="../build/tm.hybrid.js"></script>
+<script>
+tm.main(function() {
+    var app = tm.hybrid.Application("#c2", "#c3");
+    app.resize(640, 960).fitWindow().run();
+    
+    app.replaceScene(tm.game.LoadingScene({
+        width: 640, height: 960,
+        assets: {
+            bullet: "./assets/bullets.png",
+        },
+        nextScene: Main,
+    }));
+});
+
+tm.define("Main", {
+    superClass: "tm.hybrid.Scene",
+    init: function() {
+        this.superInit();
+        
+        this.spriteArray = tm.hybrid.SpriteArray("bullet");
+        this.spriteArray.addChildTo(this);
+        
+        this.camera.z = 10;
+    },
+    
+    update: function(app) {
+        this.spriteArray.rotationX += 2;
+        this.spriteArray.rotationY += 3;
+        
+        (5).times(function() {
+            var b;
+            if (b = this.spriteArray.get()) {
+                b.x = 0;
+                b.y = 0;
+                b.rotation = Math.random() * Math.PI * 2;
+                b.type = Math.rand(0, 4);
+                b.update = function() {
+                    this.x += Math.cos(this.rotation) * 0.1;
+                    this.y += Math.sin(this.rotation) * 0.1;
+                    if ((this.x * this.x) + (this.y * this.y) > 4 * 4) {
+                        this.remove();
+                    }
+                };
+                b.addChildTo(this);
+            }
+        }.bind(this));
+    }
+});
+</script>
+
+</body>
+</html>
