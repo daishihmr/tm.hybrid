@@ -46,6 +46,7 @@ module.exports = function(grunt) {
                     "hybrid/utils",
                     "asset/threejson",
                     "asset/vox",
+                    "asset/mqo",
                 ].map(function(_){ return "./src/tm/" + _ + ".js" }),
                 dest: "./build/tm.hybrid.js",
                 options: {
