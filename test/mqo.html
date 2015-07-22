@@ -20,6 +20,7 @@ tm.main(function() {
     app.replaceScene(tm.game.LoadingScene({
         width: 640, height: 960,
         assets: {
+            // もとがし氏作成のモデルデータを使用しています
             gradriel: "assets/gradriel_pose.mqo",
         },
         nextScene: mainScene,
@@ -32,7 +33,7 @@ tm.define("mainScene", {
         this.superInit();
 
         // カメラ調整
-        this.camera.setPosition(0, 30, 30);
+        this.camera.setPosition(0, 20, 40);
         this.camera.lookAt(new THREE.Vector3(0, 10, 0));
         
         // ライトを動かす
@@ -51,7 +52,7 @@ tm.define("mainScene", {
         // 著作権表示
         var lb = tm.display.Label("Princes Crown (C)Tresure")
             .addChildTo(this)
-            .setPosition(320, 930);
+            .setPosition(320, 910);
 
         // メッシュを表示する
         var mesh = tm.hybrid.Mesh("gradriel") // Spriteっぽく使える
