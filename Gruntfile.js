@@ -44,6 +44,7 @@ module.exports = function(grunt) {
         "hybrid/directionallight",
         "hybrid/utils",
         // "hybrid/spritearray",
+        "hybrid/geom",
         "asset/threejson",
         "asset/vox",
         "asset/mqo",

@@ -8,7 +8,7 @@
 
     tm.hybrid = tm.hybrid || {};
 
-    tm.hybrid.ColorConv = {
+    tm.hybrid.ColorConverter = {
         hsl: function(h, s, l) {
             if (arguments.length === 1 && typeof(arguments[0]) === "string") {
                 var m = arguments[0].split(" ").join("").match(/hsl\((\d+),(\d+)%,(\d+)%\)/);
