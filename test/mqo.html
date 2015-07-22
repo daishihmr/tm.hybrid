@@ -32,7 +32,7 @@ tm.define("mainScene", {
         this.superInit();
 
         // カメラ調整
-        this.camera.setPosition(0, 20, 50);
+        this.camera.setPosition(0, 30, 30);
         this.camera.lookAt(new THREE.Vector3(0, 10, 0));
         
         // ライトを動かす
@@ -43,6 +43,16 @@ tm.define("mainScene", {
                 this.z = Math.sin(f * 0.1) * 10;
             });
 
+        // 説明表示
+        var lb = tm.display.Label("ドラッグ（スワイプ）で回転するよ！")
+            .addChildTo(this)
+            .setPosition(320, 20);
+
+        // 著作権表示
+        var lb = tm.display.Label("Princes Crown (C)Tresure")
+            .addChildTo(this)
+            .setPosition(320, 930);
+
         // メッシュを表示する
         var mesh = tm.hybrid.Mesh("gradriel") // Spriteっぽく使える
             .addChildTo(this)
@@ -50,8 +60,10 @@ tm.define("mainScene", {
                 // スワイプでくるくるまわす
                 var p = e.app.pointing;
                 if (p.getPointing()) {
-                    this.vy = p.deltaPosition.x * 0.03;
+                    this.vy = p.deltaPosition.x * 0.01;
                     this.rotation.y += this.vy;
+                    this.vx = p.deltaPosition.y * 0.01;
+                    this.rotation.x += this.vx;
                 } else {
                     if (this.vy) {
                         this.rotation.y += this.vy;
@@ -60,15 +72,16 @@ tm.define("mainScene", {
                             this.vy = 0;
                         }
                     }
+                    if (this.vx) {
+                        this.rotation.x += this.vx;
+                        this.vx *= 0.95;
+                        if (Math.abs(this.vx) < 0.1) {
+                            this.vx = 0;
+                        }
+                    }
                 }
             });
         mesh.rolling = false;
-
-        // tweenerも使える
-        mesh.tweener.clear()
-            .to({ scaleY: 0.9 }, 300, "easeInBack")
-            .to({ scaleY: 1.0 }, 300, "easeOutBack")
-            .setLoop(true);
     }
 });
 </script>
