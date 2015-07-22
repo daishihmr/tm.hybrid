@@ -78,6 +78,9 @@
             this.three.camera = v;
         },
     });
+    tm.hybrid.Scene.prototype.getCamera = function() { return this.camera };
+    tm.hybrid.Scene.prototype.setCamera = function(v) { this.camera = v; return this };
+
     tm.hybrid.Scene.prototype.accessor("ambientLight", {
         get: function() {
             return this.three.ambientLight;
@@ -86,6 +89,9 @@
             this.three.ambientLight = v;
         },
     });
+    tm.hybrid.Scene.prototype.getAmbientLight = function() { return this.ambientLight };
+    tm.hybrid.Scene.prototype.setAmbientLight = function(v) { this.ambientLight = v; return this };
+
     tm.hybrid.Scene.prototype.accessor("directionalLight", {
         get: function() {
             return this.three.directionalLight;
@@ -94,6 +100,8 @@
             this.three.directionalLight = v;
         },
     });
+    tm.hybrid.Scene.prototype.getDirectionalLight = function() { return this.directionalLight };
+    tm.hybrid.Scene.prototype.setDirectionalLight = function(v) { this.directionalLight = v; return this };
 
     tm.hybrid.Scene.prototype.accessor("fog", {
         get: function() {
@@ -103,6 +111,9 @@
             this.three.scene.fog = v;
         },
     });
+    tm.hybrid.Scene.prototype.isFog = function() { return this.fog };
+    tm.hybrid.Scene.prototype.setFog = function(v) { this.fog = v; return this };
+
     tm.hybrid.Scene.prototype.accessor("fogColor", {
         get: function() {
             return this.three.scene.fog.color;
@@ -111,6 +122,9 @@
             this.three.scene.fog.color = v;
         },
     });
+    tm.hybrid.Scene.prototype.getFogColor = function() { return this.fogColor };
+    tm.hybrid.Scene.prototype.setFogColor = function(v) { this.fogColor = v; return this };
+
     tm.hybrid.Scene.prototype.accessor("fogNear", {
         get: function() {
             return this.three.scene.fog.near;
@@ -119,6 +133,9 @@
             this.three.scene.fog.near = v;
         },
     });
+    tm.hybrid.Scene.prototype.getFogNear = function() { return this.fogNear };
+    tm.hybrid.Scene.prototype.setFogNear = function(v) { this.fogNear = v; return this };
+
     tm.hybrid.Scene.prototype.accessor("fogFar", {
         get: function() {
             return this.three.scene.fog.far;
@@ -127,6 +144,8 @@
             this.three.scene.fog.far = v;
         },
     });
+    tm.hybrid.Scene.prototype.getFogFar = function() { return this.fogFar };
+    tm.hybrid.Scene.prototype.setFogFar = function(v) { this.fogFar = v; return this };
 
     tm.hybrid.Scene.prototype.accessor("overrideMaterial", {
         get: function() {
@@ -136,6 +155,8 @@
             this.three.scene.overrideMaterial = v;
         },
     });
+    tm.hybrid.Scene.prototype.getOverrideMaterial = function() { return this.overrideMaterial };
+    tm.hybrid.Scene.prototype.setOverrideMaterial = function(v) { this.overrideMaterial = v; return this };
 
     tm.hybrid.Scene.prototype.accessor("autoUpdate", {
         get: function() {
@@ -145,6 +166,8 @@
             this.three.scene.autoUpdate = v;
         },
     });
+    tm.hybrid.Scene.prototype.isAutoUpdate = function() { return this.autoUpdate };
+    tm.hybrid.Scene.prototype.setAutoUpdate = function(v) { this.autoUpdate = v; return this };
 
     tm.define("tm.hybrid.Scene.Three", {
         superClass: "tm.hybrid.ThreeElement",

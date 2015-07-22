@@ -14,7 +14,7 @@
             geometryParam = {}.$extend(tm.hybrid.PlaneMesh.DEFAULT_GEOMETRY_PARAM, geometryParam);
             materialParam = {}.$extend(tm.hybrid.PlaneMesh.DEFAULT_MATERIAL_PARAM, materialParam);
             var geo = new THREE.PlaneGeometry(geometryParam.width, geometryParam.height, geometryParam.widthSegments, geometryParam.heightSegments);
-            var mat = new THREE.MeshLambertMaterial(materialParam);
+            var mat = new THREE.MeshPhongMaterial(materialParam);
             this.superInit(new THREE.Mesh(geo, mat));
         },
     });
@@ -35,7 +35,7 @@
             geometryParam = {}.$extend(tm.hybrid.BoxMesh.DEFAULT_GEOMETRY_PARAM, geometryParam);
             materialParam = {}.$extend(tm.hybrid.BoxMesh.DEFAULT_MATERIAL_PARAM, materialParam);
             var geo = new THREE.BoxGeometry(geometryParam.width, geometryParam.height, geometryParam.depth, geometryParam.widthSegments, geometryParam.heightSegments, geometryParam.depthSegments);
-            var mat = new THREE.MeshLambertMaterial(materialParam);
+            var mat = new THREE.MeshPhongMaterial(materialParam);
             this.superInit(new THREE.Mesh(geo, mat));
         },
     });
