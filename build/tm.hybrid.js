@@ -684,7 +684,7 @@ THE SOFTWARE.
             geometryParam = {}.$extend(tm.hybrid.PlaneMesh.DEFAULT_GEOMETRY_PARAM, geometryParam);
             materialParam = {}.$extend(tm.hybrid.PlaneMesh.DEFAULT_MATERIAL_PARAM, materialParam);
             var geo = new THREE.PlaneGeometry(geometryParam.width, geometryParam.height, geometryParam.widthSegments, geometryParam.heightSegments);
-            var mat = new THREE.MeshLambertMaterial(materialParam);
+            var mat = new THREE.MeshPhongMaterial(materialParam);
             this.superInit(new THREE.Mesh(geo, mat));
         },
     });
@@ -705,7 +705,7 @@ THE SOFTWARE.
             geometryParam = {}.$extend(tm.hybrid.BoxMesh.DEFAULT_GEOMETRY_PARAM, geometryParam);
             materialParam = {}.$extend(tm.hybrid.BoxMesh.DEFAULT_MATERIAL_PARAM, materialParam);
             var geo = new THREE.BoxGeometry(geometryParam.width, geometryParam.height, geometryParam.depth, geometryParam.widthSegments, geometryParam.heightSegments, geometryParam.depthSegments);
-            var mat = new THREE.MeshLambertMaterial(materialParam);
+            var mat = new THREE.MeshPhongMaterial(materialParam);
             this.superInit(new THREE.Mesh(geo, mat));
         },
     });
@@ -884,6 +884,9 @@ THE SOFTWARE.
             this.three.camera = v;
         },
     });
+    tm.hybrid.Scene.prototype.getCamera = function() { return this.camera };
+    tm.hybrid.Scene.prototype.setCamera = function(v) { this.camera = v; return this };
+
     tm.hybrid.Scene.prototype.accessor("ambientLight", {
         get: function() {
             return this.three.ambientLight;
@@ -892,6 +895,9 @@ THE SOFTWARE.
             this.three.ambientLight = v;
         },
     });
+    tm.hybrid.Scene.prototype.getAmbientLight = function() { return this.ambientLight };
+    tm.hybrid.Scene.prototype.setAmbientLight = function(v) { this.ambientLight = v; return this };
+
     tm.hybrid.Scene.prototype.accessor("directionalLight", {
         get: function() {
             return this.three.directionalLight;
@@ -900,6 +906,8 @@ THE SOFTWARE.
             this.three.directionalLight = v;
         },
     });
+    tm.hybrid.Scene.prototype.getDirectionalLight = function() { return this.directionalLight };
+    tm.hybrid.Scene.prototype.setDirectionalLight = function(v) { this.directionalLight = v; return this };
 
     tm.hybrid.Scene.prototype.accessor("fog", {
         get: function() {
@@ -909,6 +917,9 @@ THE SOFTWARE.
             this.three.scene.fog = v;
         },
     });
+    tm.hybrid.Scene.prototype.isFog = function() { return this.fog };
+    tm.hybrid.Scene.prototype.setFog = function(v) { this.fog = v; return this };
+
     tm.hybrid.Scene.prototype.accessor("fogColor", {
         get: function() {
             return this.three.scene.fog.color;
@@ -917,6 +928,9 @@ THE SOFTWARE.
             this.three.scene.fog.color = v;
         },
     });
+    tm.hybrid.Scene.prototype.getFogColor = function() { return this.fogColor };
+    tm.hybrid.Scene.prototype.setFogColor = function(v) { this.fogColor = v; return this };
+
     tm.hybrid.Scene.prototype.accessor("fogNear", {
         get: function() {
             return this.three.scene.fog.near;
@@ -925,6 +939,9 @@ THE SOFTWARE.
             this.three.scene.fog.near = v;
         },
     });
+    tm.hybrid.Scene.prototype.getFogNear = function() { return this.fogNear };
+    tm.hybrid.Scene.prototype.setFogNear = function(v) { this.fogNear = v; return this };
+
     tm.hybrid.Scene.prototype.accessor("fogFar", {
         get: function() {
             return this.three.scene.fog.far;
@@ -933,6 +950,8 @@ THE SOFTWARE.
             this.three.scene.fog.far = v;
         },
     });
+    tm.hybrid.Scene.prototype.getFogFar = function() { return this.fogFar };
+    tm.hybrid.Scene.prototype.setFogFar = function(v) { this.fogFar = v; return this };
 
     tm.hybrid.Scene.prototype.accessor("overrideMaterial", {
         get: function() {
@@ -942,6 +961,8 @@ THE SOFTWARE.
             this.three.scene.overrideMaterial = v;
         },
     });
+    tm.hybrid.Scene.prototype.getOverrideMaterial = function() { return this.overrideMaterial };
+    tm.hybrid.Scene.prototype.setOverrideMaterial = function(v) { this.overrideMaterial = v; return this };
 
     tm.hybrid.Scene.prototype.accessor("autoUpdate", {
         get: function() {
@@ -951,6 +972,8 @@ THE SOFTWARE.
             this.three.scene.autoUpdate = v;
         },
     });
+    tm.hybrid.Scene.prototype.isAutoUpdate = function() { return this.autoUpdate };
+    tm.hybrid.Scene.prototype.setAutoUpdate = function(v) { this.autoUpdate = v; return this };
 
     tm.define("tm.hybrid.Scene.Three", {
         superClass: "tm.hybrid.ThreeElement",
@@ -1112,7 +1135,7 @@ tm.hybrid = tm.hybrid || {};
 
     tm.hybrid = tm.hybrid || {};
 
-    tm.hybrid.ColorConv = {
+    tm.hybrid.ColorConverter = {
         hsl: function(h, s, l) {
             if (arguments.length === 1 && typeof(arguments[0]) === "string") {
                 var m = arguments[0].split(" ").join("").match(/hsl\((\d+),(\d+)%,(\d+)%\)/);
@@ -1217,6 +1240,62 @@ tm.hybrid = tm.hybrid || {};
     tm.hybrid.Utils = {
         
     };
+})();
+
+/*
+ * geom.js
+ */
+
+(function() {
+    
+    tm.geom.Vector2.prototype.toThree = function() {
+        return new THREE.Vector2(this.x, this.y);
+    };
+    THREE.Vector2.prototype.toTm = function() {
+        return tm.geom.Vector2(this.x, this.y);
+    };
+    
+    tm.geom.Vector3.prototype.toThree = function() {
+        return new THREE.Vector3(this.x, this.y, this.z);
+    };
+    THREE.Vector3.prototype.toTm = function() {
+        return tm.geom.Vector3(this.x, this.y, this.z);
+    };
+    
+    tm.geom.Matrix33.prototype.toThree = function() {
+        return new THREE.Matrix3(
+            this.m00, this.m01, this.m02,
+            this.m10, this.m11, this.m12,
+            this.m20, this.m21, this.m22
+        );
+    };
+    THREE.Matrix3.prototype.toTm = function() {
+        var e = this.elements;
+        return tm.geom.Matrix33(
+            e[0], e[3], e[6],
+            e[1], e[4], e[7],
+            e[2], e[5], e[8]
+        );
+    };
+    
+    tm.geom.Matrix44.prototype.toThree = function() {
+        return new THREE.Matrix4(
+            this.m00, this.m01, this.m02, this.m03,
+            this.m10, this.m11, this.m12, this.m13,
+            this.m20, this.m21, this.m22, this.m23,
+            this.m30, this.m31, this.m32, this.m33
+        );
+    };
+    THREE.Matrix4.prototype.toTm = function() {
+        var e = this.elements;
+        return tm.geom.Matrix44(
+            e[0], e[4], e[8], e[12],
+            e[1], e[5], e[9], e[13],
+            e[2], e[6], e[10], e[14],
+            e[3], e[7], e[11], e[15]
+        );
+    };
+    
 })();
 
 var tm = tm || {};
