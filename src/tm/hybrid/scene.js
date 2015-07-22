@@ -47,7 +47,7 @@
         },
 
         render: function(renderer) {
-            if (this.effectComposer) {
+            if (this.effectComposer && this.effectComposer.passes.length > 1) {
                 this.effectComposer.render();
             } else {
                 renderer.render(this.three.scene, this.three.camera.threeObject);
@@ -67,6 +67,26 @@
                 this.three.removeChild(child);
             } else {
                 tm.app.Scene.prototype.removeChild.call(this, child);
+            }
+        },
+        
+        enableEffectComposer: function() {
+            if (THREE.EffectComposer && THREE.RenderPass) {
+
+                var renderTarget = new THREE.WebGLRenderTarget(this.app.width, this.app.height, {
+                    minFilter: THREE.LinearFilter,
+                    magFilter: THREE.LinearFilter,
+                    format: THREE.RGBFormat,
+                    stencilBuffer: false,
+                });
+                var renderPass = new THREE.RenderPass(this.three.scene, this.three.camera.threeObject);
+
+                this.effectComposer = new THREE.EffectComposer(this.app.threeRenderer, renderTarget);
+                this.effectComposer.addPass(renderPass);
+
+                return true;
+            } else {
+                return false;
             }
         },
     });

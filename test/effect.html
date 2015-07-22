@@ -19,31 +19,23 @@ tm.main(function() {
     app.resize(640, 960).fitWindow().run();
     
     app.replaceScene(tm.game.LoadingScene({
-        width: 640, height: 960,
+        width: 640,
+        height: 960,
         assets: {
             haruharu: "./assets/haruharu.vox",
             hiyoko: "./assets/hiyoco_nomal_full.png",
-        },
+        }.$extend(tm.hybrid.EffectModules), // postprocessing用スクリプトの読み込み
         nextScene: HaruharuOnStage,
     }));
 });
 
 tm.define("HaruharuOnStage", {
-    superClass: "tm.hybrid.Scene", // tm.app.Sceneの3D向け拡張
+    superClass: "tm.hybrid.Scene",
     init: function() {
         this.superInit();
 
-        // カメラ調整
         this.camera.setPosition(0, 20, 50);
         this.camera.lookAt(new THREE.Vector3(0, 10, 0));
-        
-        // ライトを動かす
-        this.directionalLight
-            .on("enterframe", function(e) {
-                var f = e.app.frame;
-                this.x = Math.cos(f * 0.1) * 10;
-                this.z = Math.sin(f * 0.1) * 10;
-            });
         
         this.fromJSON({
             children: {
@@ -75,8 +67,7 @@ tm.define("HaruharuOnStage", {
             }
         });
 
-        // 2Dスプライトとの併用も可能
-        for (var i = 0; i < 10; i++) {
+        for (var i = 0; i < 3; i++) {
             var hiyoko = tm.display.Sprite("hiyoko", 32, 32)
                 .setScale(4)
                 .setPosition(Math.rand(0, 640), Math.rand(0, 940))
@@ -95,6 +86,21 @@ tm.define("HaruharuOnStage", {
             hiyoko.vx = 1;
             hiyoko.vy = 1;
         }
+    },
+    
+    onenter: function() {
+        // エフェクトコンポーザーを有効化
+        this.enableEffectComposer();
+
+        // エフェクトを追加
+        this.effectComposer.addPass(new THREE.ShaderPass(THREE.SepiaShader)); // セピア調に
+        this.effectComposer.addPass(new THREE.ShaderPass(THREE.VerticalBlurShader)); // 縦ブラー
+        this.effectComposer.addPass(new THREE.ShaderPass(THREE.HorizontalBlurShader)); // 横ブラー
+
+        // 最後のパスだけrenderToScreenをtrueにする
+        this.effectComposer.passes.forEach(function(pass, i, passes) {
+            pass.renderToScreen = (i === passes.length - 1);
+        });
     }
 });
 </script>

@@ -1,6 +1,10 @@
 # tm.hybrid
 Three.jsをtmlib.jsから利用する
 
+[![Join the chat at https://gitter.im/daishihmr/tm.hybrid](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/daishihmr/tm.hybrid?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+Three.jsをtmlib.jsから利用する
+
 ```js
 tm.main(function() {
     var app = tm.hybrid.Application("#canvas2d", "#canvas3d");
