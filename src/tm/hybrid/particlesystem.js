@@ -7,7 +7,7 @@
         superClass: "tm.hybrid.ThreeElement",
 
         init: function(param) {
-            this.param = {}.$extend(ParticleSystem.DEFAULT_PARAM, param);
+            this.param = {}.$extend(tm.hybrid.ParticleSystem.DEFAULT_PARAM, param);
 
             this.geometry = this._createGeometry(this.param);
             this.material = this._createMaterial(this.param);
@@ -191,7 +191,7 @@
         update: function(app) {
             this.now += 0.001;
 
-            // this._checkEnd();
+            this._checkEnd();
             if (this.needsUpdate) {
                 this._setAttributes();
                 this.needsUpdate = false;
@@ -253,15 +253,10 @@
         },
 
         /**
-         * @param {Number} life エミッタの寿命
-         * @param {Number} epf 1フレームあたりのパーティクル生成数
-         * @param {Number?} damping 生成量の減衰率
+         * @return {tm.hybrid.ParticleEmitter}
          */
-        createEmitter: function(life, epf, damping) {
-            life = life || 1;
-            epf = epf || 1;
-            damping = damping || 1;
-            return ParticleEmitter(this, life, epf, damping).addChildTo(this.parent);
+        createEmitter: function() {
+            return tm.hybrid.ParticleEmitter(this, this.param.emitterLife, this.param.emitPerFrame, this.param.emitterDamping).addChildTo(this.parent);
         },
 
         _emit: function(position) {
@@ -285,7 +280,7 @@
             if (param.lifeRandom !== 0) {
                 p.endTime = this.now + param.life * Math.randf(1 - param.lifeRandom, 1 + param.lifeRandom) * 0.001;
             } else {
-                p.endTime = this.now + param.life;
+                p.endTime = this.now + param.life * 0.001;
             }
 
             if (param.emitRange !== 0) {
@@ -358,109 +353,6 @@
         return texture;
     })();
 
-    ParticleSystem.DEFAULT_PARAM = {
-        // テクスチャ
-        texture: DEFAULT_TEXTURE,
-        // 頂点数
-        count: 10000,
-        // 寿命(フレーム)
-        life: 60,
-        // 寿命のランダム幅(life=1.0, lifeRandom=0.1 → life=0.9～1.1)
-        lifeRandom: 0,
-        // 生成範囲(エミッタからの距離)
-        emitRange: 0,
-        // 移動方向ベクトル(null時はランダム方向へ)
-        direction: null,
-        // 移動方向ランダム角
-        directionRandom: 0,
-        // 移動距離
-        distance: 1.0,
-        // 移動距離ランダム幅
-        distanceRandom: 0,
-        // 移動イージング
-        easing: easing.LINEAR,
-        // ブレンディング
-        blending: THREE.AdditiveBlending,
-
-        // サイズ初期値
-        sizeFrom: 1.0,
-        // サイズ最終値
-        sizeTo: 1.0,
-        // サイズ変化時間(lifeを1とした場合)
-        sizeDuration: 1.0,
-        // サイズイージング
-        sizeEasing: easing.LINEAR,
-
-        // 回転初期値
-        texRotFrom: 0.0,
-        // 回転最終値
-        texRotTo: 0.0,
-        // 回転変化時間(lifeを1とした場合)
-        texRotDuration: 0.0,
-        // 回転イージング
-        texRotEasing: easing.LINEAR,
-
-        // 赤成分初期値
-        redFrom: 1.0,
-        // 赤成分最終値
-        redTo: 1.0,
-        // 赤成分変化時間(lifeを1とした場合)
-        redDuration: 1.0,
-        // 赤成分イージング
-        redEasing: easing.LINEAR,
-
-        // 緑成分初期値
-        greenFrom: 1.0,
-        // 緑成分最終値
-        greenTo: 1.0,
-        // 緑成分変化時間(lifeを1とした場合)
-        greenDuration: 1.0,
-        // 緑成分イージング
-        greenEasing: easing.LINEAR,
-
-        // 青成分初期値
-        blueFrom: 1.0,
-        // 青成分最終値
-        blueTo: 1.0,
-        // 青成分変化時間(lifeを1とした場合)
-        blueDuration: 1.0,
-        // 青成分イージング
-        blueEasing: easing.LINEAR,
-
-        // アルファ成分初期値
-        alphaFrom: 1.0,
-        // アルファ成分最終値
-        alphaTo: 0.0,
-        // アルファ成分変化時間(lifeを1とした場合)
-        alphaDuration: 1.0,
-        // アルファ成分イージング
-        alphaEasing: easing.LINEAR,
-    };
-
-    var ParticleEmitter = tm.createClass({
-        superClass: tm.hybrid.ThreeElement,
-
-        init: function(particleSystem, life, epf, damping) {
-            this.superInit();
-            this.particleSystem = particleSystem;
-            this.life = life;
-            this.epf = epf;
-            this.damping = damping;
-        },
-
-        update: function(app) {
-            for (var i = 0; i < this.epf; i++) {
-                this.particleSystem._emit(this.position);
-            }
-
-            this.life -= 1;
-            this.epf *= this.damping;
-            if (this.life <= 0) {
-                this.remove();
-            }
-        },
-    });
-
     var easing = tm.hybrid.ParticleSystem.easing = {
         LINEAR: 0,
         QUAD_IN: 1,
@@ -494,6 +386,255 @@
         BOUNCE_IN: 29,
         BOUNCE_IN_OUT: 30,
     };
+
+    tm.hybrid.ParticleSystem.DEFAULT_PARAM = {
+        /**
+         * エミッタの寿命（フレーム）
+         * @type {number}
+         */
+        emitterLife: 1,
+        /**
+         * 1フレームあたりのパーティクル生成数
+         * @type {number}
+         */
+        emitPerFrame: 1,
+        /**
+         * 生成量の減衰率
+         * @type {number}
+         */
+        emitterDamping: 1.0,
+        
+        /**
+         * テクスチャ
+         * @type {number}
+         */
+        texture: DEFAULT_TEXTURE,
+        /**
+         * 頂点数
+         * @type {number}
+         */
+        count: 10000,
+        /**
+         * パーティクルの寿命(フレーム)
+         * @type {number}
+         */
+        life: 60,
+        /**
+         * 寿命のランダム幅(life=1.0, lifeRandom=0.1 → life=0.9～1.1)
+         * @type {number}
+         */
+        lifeRandom: 0,
+        /**
+         * 生成範囲(エミッタからの距離)
+         * @type {number}
+         */
+        emitRange: 0,
+
+        /**
+         * 移動方向ベクトル(null時はランダム方向へ)
+         * @type {number}
+         */
+        direction: null,
+        /**
+         * 移動方向ランダム角
+         * @type {number}
+         */
+        directionRandom: 0,
+        /**
+         * 移動距離
+         * @type {number}
+         */
+        distance: 1.0,
+        /**
+         * 移動距離ランダム幅
+         * @type {number}
+         */
+        distanceRandom: 0,
+        /**
+         * 移動方向ランダム角
+         * @type {number}
+         */
+        directionToRandom: 0,
+        /**
+         * 移動イージング
+         */
+        easing: easing.LINEAR,
+        
+        // TODO ここから
+        
+        /**
+         * 初速ベクトル(null時はランダム方向へ速さ1)
+         * @type {THREE.Vector3}
+         */
+        initialVelocity: null,
+        /**
+         * 加速度(initialVelocityと同じ向き)
+         * @type {number}
+         */
+        acceleration: 0,
+        /**
+         * 重力加速度({x:0, y:1, z:0}の向き)
+         * @type {number}
+         */
+        gravity: 0,
+        
+        // TODO ここまで
+
+        /**
+         * ブレンディング
+         */
+        blending: THREE.AdditiveBlending,
+
+        /**
+         * サイズ初期値
+         * @type {number}
+         */
+        sizeFrom: 1.0,
+        /**
+         * サイズ最終値
+         * @type {number}
+         */
+        sizeTo: 1.0,
+        /**
+         * サイズ変化時間(lifeを1とした場合)
+         * @type {number}
+         */
+        sizeDuration: 1.0,
+        /**
+         * サイズイージング
+         * @type {number}
+         */
+        sizeEasing: easing.LINEAR,
+
+        /**
+         * 回転初期値
+         * @type {number}
+         */
+        texRotFrom: 0.0,
+        /**
+         * 回転最終値
+         * @type {number}
+         */
+        texRotTo: 0.0,
+        /**
+         * 回転変化時間(lifeを1とした場合)
+         * @type {number}
+         */
+        texRotDuration: 0.0,
+        /**
+         * 回転イージング
+         * @type {number}
+         */
+        texRotEasing: easing.LINEAR,
+
+        /**
+         * 赤成分初期値
+         * @type {number}
+         */
+        redFrom: 1.0,
+        /**
+         * 赤成分最終値
+         * @type {number}
+         */
+        redTo: 1.0,
+        /**
+         * 赤成分変化時間(lifeを1とした場合)
+         * @type {number}
+         */
+        redDuration: 1.0,
+        /**
+         * 赤成分イージング
+         * @type {number}
+         */
+        redEasing: easing.LINEAR,
+
+        /**
+         * 緑成分初期値
+         * @type {number}
+         */
+        greenFrom: 1.0,
+        /**
+         * 緑成分最終値
+         * @type {number}
+         */
+        greenTo: 1.0,
+        /**
+         * 緑成分変化時間(lifeを1とした場合)
+         * @type {number}
+         */
+        greenDuration: 1.0,
+        /**
+         * 緑成分イージング
+         * @type {number}
+         */
+        greenEasing: easing.LINEAR,
+
+        /**
+         * 青成分初期値
+         * @type {number}
+         */
+        blueFrom: 1.0,
+        /**
+         * 青成分最終値
+         * @type {number}
+         */
+        blueTo: 1.0,
+        /**
+         * 青成分変化時間(lifeを1とした場合)
+         * @type {number}
+         */
+        blueDuration: 1.0,
+        /**
+         * 青成分イージング
+         * @type {number}
+         */
+        blueEasing: easing.LINEAR,
+
+        /**
+         * アルファ成分初期値
+         * @type {number}
+         */
+        alphaFrom: 1.0,
+        /**
+         * アルファ成分最終値
+         * @type {number}
+         */
+        alphaTo: 0.0,
+        /**
+         * アルファ成分変化時間(lifeを1とした場合)
+         * @type {number}
+         */
+        alphaDuration: 1.0,
+        /**
+         * アルファ成分イージング
+         * @type {number}
+         */
+        alphaEasing: easing.LINEAR,
+    };
+
+    tm.define("tm.hybrid.ParticleEmitter", {
+        superClass: tm.hybrid.ThreeElement,
+
+        init: function(particleSystem, life, epf, damping) {
+            this.superInit();
+            this.particleSystem = particleSystem;
+            this.life = life;
+            this.epf = epf;
+            this.damping = damping;
+        },
+
+        update: function(app) {
+            for (var i = 0; i < this.epf; i++) {
+                this.particleSystem._emit(this.position);
+            }
+
+            this.life -= 1;
+            this.epf *= this.damping;
+            if (this.life <= 0) {
+                this.remove();
+            }
+        },
+    });
 
     var EasingFunctions = [
         "#ifndef LINEAR",

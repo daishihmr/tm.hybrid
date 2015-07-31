@@ -45,6 +45,7 @@ module.exports = function(grunt) {
         "hybrid/utils",
         "hybrid/effect",
         "hybrid/geom",
+        "hybrid/particlesystem",
         "asset/threejson",
         "asset/vox",
         "asset/mqo",

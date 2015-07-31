@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+
+<canvas id="canvas3d"></canvas>
+<canvas id="canvas2d"></canvas>
+
+<script src="https://cdn.rawgit.com/phi-jp/tmlib.js/0.5.2/build/tmlib.min.js"></script>
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r71/build/three.min.js"></script>
+<script src="https://cdn.rawgit.com/mrdoob/stats.js/r14/build/stats.min.js"></script>
+
+<script src="../build/tm.hybrid.js"></script>
+<script>
+tm.main(function() {
+    var app = tm.hybrid.Application("#canvas2d", "#canvas3d");
+    app.fps = 60;
+    app.enableStats();
+    app.resize(640, 960).fitWindow().run();
+    
+    app.replaceScene(tm.game.LoadingScene({
+        width: 640, height: 960,
+        assets: {},
+        nextScene: MainScene,
+    }));
+});
+
+tm.define("MainScene", {
+    superClass: "tm.hybrid.Scene", // tm.app.Sceneの3D向け拡張
+    init: function() {
+        this.superInit();
+        
+        this.camera.z += 10;
+        
+        var ps = tm.hybrid.ParticleSystem({
+            life: 50,
+            emitterLife: 6000,
+            emitPerFrame: 10,
+            distance: 2,
+        });
+        ps.addChildTo(this);
+        
+        (10).times(function(i) {
+            var f0 = Math.rand(0, 100);
+            var f1 = Math.rand(0, 100);
+            var f2 = Math.rand(0, 500);
+            ps.createEmitter()
+                .on("enterframe", function(e) {
+                    var f = e.app.frame;
+                    this.x = Math.sin((f + f0) * 0.05) * 2.0;
+                    this.y = Math.cos((f + f1) * 0.04) * 4.0;
+                    this.z = Math.sin((f + f2) * 0.01) * 6.6 - 2;
+                });
+        })
+    }
+});
+</script>
+
+</body>
+</html>
